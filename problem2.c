@@ -31,9 +31,9 @@ void printArray(int a[],int len){
 int main(){
         int arr[100];
 	char *filename = "./File1.txt";
-
-
 	read_ints(filename,arr);
-	printArray(arr,10 );
+	printArray(arr,10);
+	int max = find_max(arr,10);
+	printf("Max is: %d\n", max);
         return 0;
 }
