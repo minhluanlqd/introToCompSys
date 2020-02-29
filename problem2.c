@@ -1,4 +1,7 @@
 #include<stdio.h>
+#include<unistd.h>
+#include <sys/types.h>
+
 void read_ints(const char* file_name,int arr[]){
 	FILE *file = fopen(file_name, "r");
 	int i = 0;
@@ -12,6 +15,17 @@ void read_ints(const char* file_name,int arr[]){
 	}
 	fclose(file);
 }
+void writeResult(const char* file_name,int arr[], int len){
+        FILE *file = fopen(file_name, "w");
+        int max = find_max(arr, len);
+
+        fprintf(file, "Hello I am process: %d\n Max = %d", getpid(), max);
+        
+
+
+        fclose(file);
+}
+ 
 int find_max(int arr[],int arrLength){
         int i;
         int max = arr[0];
@@ -31,9 +45,8 @@ void printArray(int a[],int len){
 int main(){
         int arr[100];
 	char *filename = "./File1.txt";
+	char *resultFile ="./result.txt";
 	read_ints(filename,arr);
-	printArray(arr,10);
-	int max = find_max(arr,10);
-	printf("Max is: %d\n", max);
+	writeResult(resultFile, arr, 10); //10 is just a dummy length
         return 0;
 }
