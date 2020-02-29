@@ -12,6 +12,16 @@ void read_ints(const char* file_name,int arr[]){
 	}
 	fclose(file);
 }
+int find_max(int arr[],int arrLength){
+        int i;
+        int max = arr[0];
+        for(i = 1; i<arrLength; i++){
+                if(max < arr[i]){
+                        max = arr[i];
+                }
+        }
+        return max;
+}
 void printArray(int a[],int len){
 	int i = 0;
 	for (i =0 ; i<len;i++){
