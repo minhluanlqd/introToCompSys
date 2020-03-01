@@ -15,27 +15,40 @@ void read_ints(const char* file_name,int arr[]){
 	}
 	fclose(file);
 }
+int *find_max(int arr[],int arrLength){
+        int i;
+        int max = arr[0];
+        int result[4];
+        int hidden[3];
+        int hid = 0;
+        for(i = 1; i<arrLength; i++){
+                if(max < arr[i]){
+                        max = arr[i];
+                }
+                if (arr[i] <0){
+                hidden[hid] = i;
+                hid++;
+                                }
+        }
+        result[0] = max;
+        result[1] = hidden[0];
+        result[2] = hidden[1];
+        result[3]= hidden[2];
+        return result;
+}
+
+
 void writeResult(const char* file_name,int arr[], int len){
         FILE *file = fopen(file_name, "w");
-        int max = find_max(arr, len);
+        int* result = find_max(arr, len);
 
-        fprintf(file, "Hello I am process: %d\n Max = %d", getpid(), max);
+        fprintf(file, "Hello I am process: %d\nMax = %d\nI found hidden keys in position A[%d] A[%d] A[%d]", getpid(), result[0], result[1], result[2], result[3]);
         
 
 
         fclose(file);
 }
  
-int find_max(int arr[],int arrLength){
-        int i;
-        int max = arr[0];
-        for(i = 1; i<arrLength; i++){
-                if(max < arr[i]){
-                        max = arr[i];
-                }
-        }
-        return max;
-}
 void printArray(int a[],int len){
 	int i = 0;
 	for (i =0 ; i<len;i++){
@@ -43,7 +56,7 @@ void printArray(int a[],int len){
 }}
 
 int main(){
-        int arr[100];
+        int arr[1000];
 	char *filename = "./File1.txt";
 	char *resultFile ="./result.txt";
 	read_ints(filename,arr);
