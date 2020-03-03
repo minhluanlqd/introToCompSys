@@ -15,7 +15,7 @@ void read_ints(const char* file_name,int arr[]){
 	}
 	fclose(file);
 }
-int *find_max(int arr[],int arrLength){
+int *find_max(int arr[],int arrLength){ //this function find max also find hidden key
         int i;
         int max = arr[0];
         int result[4];
@@ -56,10 +56,10 @@ void printArray(int a[],int len){
 }}
 
 int main(){
-        int arr[1000];
-	char *filename = "./File1.txt";
-	char *resultFile ="./result.txt";
+        int arr[1000000];
+	char *filename = "./File1M.txt";
+	char *resultFile ="./result1M.txt";
 	read_ints(filename,arr);
-	writeResult(resultFile, arr, 10); //10 is just a dummy length
+	writeResult(resultFile, arr, 1000000); //10 is just a dummy length
         return 0;
 }

@@ -1,0 +1,3 @@
+Hello I am process: 21214
+Max = 999
+I found hidden keys in position A[26] A[962] A[998]
