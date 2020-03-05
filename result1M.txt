@@ -1,3 +1,3 @@
-Hello I am process: 21482
+Hello I am process: 18188
 Max = 1000000
-I found hidden keys in position A[18] A[1222] A[2192]
+I found hidden keys in position A[250000] A[500000] A[750000]

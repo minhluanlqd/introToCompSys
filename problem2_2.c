@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<time.h>
 #include<unistd.h>
 #include <sys/types.h>
 
@@ -69,6 +70,9 @@ void writeResult(const char* file_name,int arr[], int low, int high){
 
 
 int main(){
+	double time_spent = 0.0;
+	clock_t begin = clock();
+
 	int myPipe[2];
 	int maxPipe[2];
         int arr[1000000];
@@ -94,14 +98,15 @@ int main(){
 		write(maxPipe[1],&max1, sizeof(max1));
 	}
 	else {//parent process
+		waitpid(NULL);
 		read(myPipe[0], outString, 100);
 		int maxChild;
 		read(maxPipe[0], &maxChild, sizeof(maxChild));
 		int max2 = find_max(arr, size/2-1, size-1);
 		int *hidden = findHiddenKeys(arr, size/2-1, size-1, p);
 		int hidden1 = hidden[0], hidden2 = hidden[1];
-		printf("Hi I am process %d and my parent is %d\nI found hidden keys at A[%d] A[%d]\n", getpid(),getppid(), hidden1, hidden2);
-		printf("%s", outString);
+		//printf("Hi I am process %d and my parent is %d\nI found hidden keys at A[%d] A[%d]\n", getpid(),getppid(), hidden1, hidden2);
+		//printf("%s", outString);
 		if(maxChild > max2){
 			max2= maxChild;
 		}
@@ -109,8 +114,11 @@ int main(){
 		fprintf(file, "Max is %d\n", max2);
 		fprintf(file, "Hi I am process %d and my parent is %d\nI found hidden keys at A[%d] A[%d]\n", getpid(), getppid(), hidden1, hidden2);
 		fprintf(file, "%s", outString);
-		waitpid(NULL);
+		//waitpid(NULL);
 
+		clock_t end = clock();
+		time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+		printf("\nTime elpased is %f seconds\n", time_spent);
 	}
 
         return 0;

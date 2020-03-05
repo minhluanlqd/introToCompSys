@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<time.h>
 #include<unistd.h>
 #include <sys/types.h>
 
@@ -56,10 +57,19 @@ void printArray(int a[],int len){
 }}
 
 int main(){
+	double time_spent = 0.0;
+	clock_t begin = clock();
+
         int arr[1000000];
 	char *filename = "./File1M.txt";
 	char *resultFile ="./result1M.txt";
 	read_ints(filename,arr);
 	writeResult(resultFile, arr, 1000000); //10 is just a dummy length
+
+	clock_t end = clock();
+
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("\nTime elpased is %f seconds\n", time_spent);
+
         return 0;
 }
