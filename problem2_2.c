@@ -75,11 +75,11 @@ int main(){
 
 	int myPipe[2];
 	int maxPipe[2];
-        int arr[1000000];
+        int arr[10];
 	int size = sizeof(arr)/sizeof(arr[0]);
 	char outString[100];
-	char *filename = "./File1M.txt";
-	char *resultFile ="./result_2_1M.txt";
+	char *filename = "./File1.txt";
+	char *resultFile ="./result_2_1.txt";
 	read_ints(filename,arr);
 
 	int createPipe=	pipe(myPipe);

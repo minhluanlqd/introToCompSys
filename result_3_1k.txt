@@ -1,0 +1,5 @@
+Max is 1000
+Hi I am process 26863 and my parent is 26122
+I found hidden keys at A[500] A[750]
+Hi I am  process 26864 and my parent is 26863
+I found hidden key at A[250]
