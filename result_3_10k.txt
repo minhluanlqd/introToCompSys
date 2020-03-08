@@ -1,18 +1,19 @@
-Parent: Hi I am process 8312 and my parent is 3452
+Parent: Hi I am process 10872 and my parent is 9284
 Max is: 9994
-Hi I am process 8315 and my parent is 8313
+Hi I am process 10875 and my parent is 10873
 Max is: 9992
 
-Hi I am process 8316 and my parent is 8313
+Hi I am process 10876 and my parent is 10873 and I found hidden key at A[2500]
 Max is: 9997
 
-Hi I am process 8317 and my parent is 8314
+Hi I am process 10877 and my parent is 10874
 Max is: 9998
 
-Hi I am  process 8318 and my parent is 8314
+Hi I am process 10878 and my parent is 10874 and I found hidden key at A[5000]
 Max is: 9996
-Hi I am  process 8313 and my parent is 8312
+
+Hi I am  process 10873 and my parent is 10872
 Max is: 9995
-Hi I am  process 8314 and my parent is 8312
+Hi I am  process 10874 and my parent is 10872 and I found hidden key at A[7500]
 Max is: 9989
 Total max is: 9998

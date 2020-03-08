@@ -1,18 +1,17 @@
-Parent: Hi I am process 8227 and my parent is 3452
+Parent: Hi I am process 10782 and my parent is 9284 and I found hidden key at A[7]
 Max is: 49
-Hi I am process 8230 and my parent is 8228
+Hi I am process 10785 and my parent is 10783
 Max is: 234
 
-Hi I am process 8231 and my parent is 8228
+Hi I am process 10786 and my parent is 10783
 Max is: 20
 
-Hi I am process 8232 and my parent is 8229
+Hi I am  process 10787 and my parent is 10784 and I found hidden key at A[2]
 Max is: -35
-
-Hi I am  process 8233 and my parent is 8229
+Hi I am  process 10788 and my parent is 10784
 Max is: 567
-Hi I am  process 8228 and my parent is 8227
+Hi I am  process 10783 and my parent is 10782 and I found hidden key at A[4]
 Max is: -45
-Hi I am  process 8229 and my parent is 8227
+Hi I am  process 10784 and my parent is 10782
 Max is: 23
 Total max is: 567
