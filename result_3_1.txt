@@ -1,5 +1,18 @@
-Max is 567
-Hi I am process 22103 and my parent is 20849
-I found hidden keys at A[4] A[7]
-Hi I am  process 22104 and my parent is 22103
-I found hidden key at A[2]
+Parent: Hi I am process 8227 and my parent is 3452
+Max is: 49
+Hi I am process 8230 and my parent is 8228
+Max is: 234
+
+Hi I am process 8231 and my parent is 8228
+Max is: 20
+
+Hi I am process 8232 and my parent is 8229
+Max is: -35
+
+Hi I am  process 8233 and my parent is 8229
+Max is: 567
+Hi I am  process 8228 and my parent is 8227
+Max is: -45
+Hi I am  process 8229 and my parent is 8227
+Max is: 23
+Total max is: 567
