@@ -44,10 +44,9 @@ int* findHiddenKeys (int arr[], int lowerBound, int upperBound, int fork){
 	}
 
 }
-int find_max(int arr[],int lowerBound, int upperBound){ //this function find max also find hidden key
+int find_max(int arr[],int lowerBound, int upperBound){ //this function find max 
         int i;
         int max = arr[lowerBound];
-      
         for(i = lowerBound ; i<upperBound; i++){
                 if(max < arr[i]){
                         max = arr[i];
@@ -55,7 +54,19 @@ int find_max(int arr[],int lowerBound, int upperBound){ //this function find max
 	}
         return max;
 }
-
+int find_hidden_key(int arr[], int lowerBound, int upperBound){
+	int i;
+	int hiddenID;
+	for(i = lowerBound; i < upperBound; i++){
+		if(arr[i]<0){
+			hiddenID = i;
+			return hiddenID; 
+		}else{
+			hiddenID = 0;
+		}
+	}
+	return hiddenID;
+}
 
 void writeResult(const char* file_name,int arr[], int low, int high){
         FILE *file = fopen(file_name, "w");
@@ -79,7 +90,7 @@ int main(){
 	int Pipe4[2];
 	int Pipe5[2];
 	int Pipe6[2];
-        int arr[100000];   // FIX THIS LENGTH ACCORDING TO THE FILE
+        int arr[1000000];   // FIX THIS LENGTH ACCORDING TO THE FILE
 	int size = sizeof(arr)/sizeof(arr[0]);
 	int interval = (size - 1)/7;
 	int b1 = interval * 1;
@@ -95,8 +106,8 @@ int main(){
 	char outString4[100];
 	char outString5[100];
 	char outString6[100];
-	char *filename = "./File100k.txt"; // FIX NAME FILE
-	char *resultFile ="./result_3_100k.txt"; // FIX NAME OF RESULT FILE
+	char *filename = "./File1M.txt"; // FIX NAME FILE
+	char *resultFile ="./result_3_1M.txt"; // FIX NAME OF RESULT FILE
 	read_ints(filename,arr);
 	pipe(Pipe1);
 	pipe(Pipe2);
@@ -118,6 +129,7 @@ int main(){
 		read(Pipe5[0], outString5, 100);
 		read(Pipe6[0], outString6, 100);
 		int maxGrChild[7];
+		int hiddenArr[7];
 		read(Pipe1[0], &maxGrChild[1], sizeof(maxGrChild[1]));
 		read(Pipe2[0], &maxGrChild[2], sizeof(maxGrChild[2]));
 		read(Pipe3[0], &maxGrChild[3], sizeof(maxGrChild[3]));
@@ -126,8 +138,13 @@ int main(){
 		read(Pipe6[0], &maxGrChild[6], sizeof(maxGrChild[6]));
 		maxGrChild[0] = find_max(arr,b6,b7); // this elem is max of parent
 		int max = find_max(maxGrChild, 0 , 7);
+		int hiddenID = find_hidden_key(arr,b6,b7);
 		FILE *file = fopen(resultFile, "w");
-		fprintf(file,"Parent: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),maxGrChild[0]);
+		if(hiddenID == 0){
+			fprintf(file,"Parent: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),maxGrChild[0]);
+		}else{
+			fprintf(file,"Parent: Hi I am process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d\n", getpid(), getppid(),hiddenID,maxGrChild[0]);
+		}
 		printf("maxGrChild1 is: %d\nmaxGrChild2 is: %d\nmaxGrChild3 is: %d\n", maxGrChild[1], maxGrChild[2], maxGrChild[3]);
 		printf("maxGrChild4 is: %d\nmaxGrChild5 is: %d\nmaxGrChild6 is: %d\n", maxGrChild[4], maxGrChild[5], maxGrChild[6]);
 		fprintf(file,"%s\n", outString1);
@@ -140,43 +157,78 @@ int main(){
 		fclose(file);
 	}else if (p == 0 && p1 > 0){ // 1st child
 		int max = find_max(arr,b4,b5);
+		int hiddenID = find_hidden_key(arr,b4,b5);
 		printf("1st Child: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-		sprintf(outString5, "Hi I am  process %d and my parent is %d\nMax is: %d", getpid(),getppid(), max);
-		write(Pipe5[1], outString5, 100);
-		write(Pipe5[1], &max, sizeof(max));
+		if(hiddenID == 0){
+			sprintf(outString5, "Hi I am  process %d and my parent is %d\nMax is: %d", getpid(),getppid(), max);
+			write(Pipe5[1], outString5, 100);
+			write(Pipe5[1], &max, sizeof(max));
+		}else{
+			sprintf(outString5, "Hi I am  process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d", getpid(),getppid(),hiddenID, max);
+			write(Pipe5[1], outString5, 100);
+			write(Pipe5[1], &max, sizeof(max));
+		}
 		int p2 = fork(); // 1st child born 2nd grandchild
 		if(p2 == 0){
 			int max = find_max(arr,b1,b2);
+			int hiddenID = find_hidden_key(arr,b1,b2);
 			printf("2nd GrChild: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-			sprintf(outString2, "Hi I am process %d and my parent is %d\nMax is: %d\n",getpid(), getppid(), max);
-			write(Pipe2[1], outString2, 100);
-			write(Pipe2[1], &max, sizeof(max));
+			if(hiddenID == 0){
+				sprintf(outString2, "Hi I am process %d and my parent is %d\nMax is: %d\n",getpid(), getppid(), max);
+				write(Pipe2[1], outString2, 100);
+				write(Pipe2[1], &max, sizeof(max));
+			}else{
+				sprintf(outString2, "Hi I am process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d\n",getpid(), getppid(),hiddenID, max);
+				write(Pipe2[1], outString2, 100);
+				write(Pipe2[1], &max, sizeof(max));
+			}
 		}else{
 			wait(NULL);
 			wait(NULL);
 		}
 	}else if (p > 0 && p1 == 0){ // 2nd child
 		int max = find_max(arr,b5,b6);
+		int hiddenID = find_hidden_key(arr,b5,b6);
 		printf("2nd Child: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-		sprintf(outString6, "Hi I am  process %d and my parent is %d\nMax is: %d", getpid(),getppid(), max);
-		write(Pipe6[1], outString6, 100);
-		write(Pipe6[1], &max, sizeof(max));
+		if(hiddenID == 0){
+			sprintf(outString6, "Hi I am  process %d and my parent is %d\nMax is: %d", getpid(),getppid(), max);
+			write(Pipe6[1], outString6, 100);
+			write(Pipe6[1], &max, sizeof(max));
+		}else{
+			sprintf(outString6, "Hi I am  process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d", getpid(),getppid(),hiddenID, max);
+			write(Pipe6[1], outString6, 100);
+			write(Pipe6[1], &max, sizeof(max));
+		}
 		int p3 = fork(); // 2nd child born 1st granchild
 		if(p3 == 0){ // 3rd grandchild
 			int max = find_max(arr,b2,b3);
+			int hiddenID = find_hidden_key(arr,b2,b3);
 			printf("3rd GrChild: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-			sprintf(outString3,"Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(), max);
-			write(Pipe3[1], outString3, 100);
-			write(Pipe3[1], &max, sizeof(max));
+			if(hiddenID == 0){
+				sprintf(outString3,"Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(), max);
+				write(Pipe3[1], outString3, 100);
+				write(Pipe3[1], &max, sizeof(max));
+			}else{
+				sprintf(outString3, "Hi I am  process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d", getpid(),getppid(),hiddenID, max);
+				write(Pipe3[1], outString3, 100);
+				write(Pipe3[1], &max, sizeof(max));
+			}
 		}else{
 			int p4 = fork(); //2nd child born 2nd grandchild
 //			wait(NULL);
 			if(p4 == 0){ // 4th grandchild
 				int max = find_max(arr, b3, b4);
+				int hiddenID = find_hidden_key(arr,b3,b4);
 				printf("4th GrChild: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-				sprintf(outString4, "Hi I am  process %d and my parent is %d\nMax is: %d", getpid(),getppid(), max);
-				write(Pipe4[1], outString4, 100);
-				write(Pipe4[1], &max, sizeof(max));
+				if(hiddenID == 0){
+					sprintf(outString4, "Hi I am  process %d and my parent is %d\nMax is: %d", getpid(),getppid(), max);
+					write(Pipe4[1], outString4, 100);
+					write(Pipe4[1], &max, sizeof(max));
+				}else{
+					sprintf(outString4, "Hi I am process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d\n",getpid(), getppid(), hiddenID, max);
+					write(Pipe4[1], outString4, 100);
+					write(Pipe4[1], &max, sizeof(max));
+				}
 			}else{
 				wait(NULL);
 				wait(NULL);
@@ -184,10 +236,17 @@ int main(){
 		}
 	}else{ // 1st grandchild
 		int max = find_max(arr,0,b1);
+		int hiddenID = find_hidden_key(arr,0,b1);
 		printf("1st GrChild: Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-		sprintf(outString1,"Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
-		write(Pipe1[1],outString1, 100);
-		write(Pipe1[1],&max, sizeof(max));
+		if(hiddenID == 0){
+			sprintf(outString1,"Hi I am process %d and my parent is %d\nMax is: %d\n", getpid(), getppid(),max);
+			write(Pipe1[1],outString1, 100);
+			write(Pipe1[1],&max, sizeof(max));
+		}else{
+			sprintf(outString1,"Hi I am process %d and my parent is %d and I found hidden key at A[%d]\nMax is: %d\n",getpid(),getppid(), hiddenID, max);
+			write(Pipe1[1],outString1, 100);
+			write(Pipe1[1],&max, sizeof(max));
+		}
 	}
 //	else if (p == 0) { //Child process
 //		int max1 = find_max(arr, 0, size/2-1);
