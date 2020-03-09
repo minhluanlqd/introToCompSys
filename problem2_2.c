@@ -78,7 +78,7 @@ int main(){
         int arr[10];
 	int size = sizeof(arr)/sizeof(arr[0]);
 	char outString[100];
-	char *filename = "./File1.txt";
+	char *filename = "./File10.txt";
 	char *resultFile ="./result_2_1.txt";
 	read_ints(filename,arr);
 
